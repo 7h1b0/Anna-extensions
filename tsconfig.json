@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "target": "esnext",
-    "types": ["jest"],
+    "types": ["jest", "node", "firefox-webext-browser"],
     "module": "commonjs",
     "jsx": "react",
     "esModuleInterop": true,

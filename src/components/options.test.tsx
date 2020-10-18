@@ -13,6 +13,7 @@ describe('Options', () => {
 
     global.browser = {
       storage: {
+        // @ts-expect-error local is missing some functions
         local: {
           set,
           get,

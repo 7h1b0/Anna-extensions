@@ -7,9 +7,7 @@ import SceneList from './scene-list';
 
 describe('SceneList', () => {
   it('should let user launch a scene', async () => {
-    const spyLaunchScene = jest
-      .spyOn(Api, 'launchScene')
-      .mockResolvedValue(void 0);
+    const spyLaunchScene = jest.spyOn(Api, 'launchScene');
     jest.spyOn(Api, 'fetchScenes').mockResolvedValue([
       {
         sceneId: '434d2662-de89-4861-9ca1-46e307d31f90',
