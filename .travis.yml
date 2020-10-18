@@ -1,0 +1,21 @@
+language: node_js
+node_js:
+  - 'node'
+
+cache:
+  npm: true
+  directories:
+    - ~/.cache
+
+install:
+  - npm ci --prefer-offline --no-audit
+
+before_script:
+  - npm run build
+
+script:
+  - npm run format:check
+  - npm run type:check
+
+notifications:
+  email: false
