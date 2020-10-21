@@ -43,7 +43,10 @@ module.exports = ({ prod = false } = {}) => {
         filename: 'options.html',
       }),
       new CopyPlugin({
-        patterns: [{ from: 'manifest.json' }],
+        patterns: [
+          { from: 'manifest.json' },
+          { from: 'assets/*', context: 'src/' },
+        ],
       }),
       new CleanWebpackPlugin({
         verbose: false,

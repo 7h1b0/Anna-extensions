@@ -15,5 +15,9 @@
     "gecko": {
       "id": "anna@7h1b0"
     }
+  },
+  "icons": {
+    "16": "assets/icon-16.png",
+    "128": "assets/icon-128.png"
   }
 }
