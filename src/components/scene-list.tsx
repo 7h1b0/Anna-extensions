@@ -1,14 +1,15 @@
 import React from 'react';
 
 import type { Scene } from '../scene';
-import { fetchScenes } from '../api';
 import SceneBtn from './scene';
+import { useFetchScenes } from '../api';
 
 function sortByName(a: Scene, b: Scene) {
   return a.name.localeCompare(b.name);
 }
 
 function SceneList() {
+  const fetchScenes = useFetchScenes();
   const [scenes, setScenes] = React.useState([]);
 
   React.useEffect(() => {
