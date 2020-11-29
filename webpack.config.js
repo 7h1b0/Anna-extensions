@@ -1,6 +1,5 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = ({ prod = false } = {}) => {
@@ -8,7 +7,6 @@ module.exports = ({ prod = false } = {}) => {
     mode: prod ? 'production' : 'development',
     entry: {
       main: './src',
-      options: './src/options',
     },
     target: 'web',
     output: {
@@ -31,25 +29,14 @@ module.exports = ({ prod = false } = {}) => {
     },
     plugins: [
       new HtmlWebpackPlugin({
-        inject: true,
-        chunks: ['main'],
         template: 'src/index.html',
         filename: 'index.html',
-      }),
-      new HtmlWebpackPlugin({
-        inject: true,
-        chunks: ['options'],
-        template: 'src/options.html',
-        filename: 'options.html',
       }),
       new CopyPlugin({
         patterns: [
           { from: 'manifest.json' },
           { from: 'assets/*', context: 'src/' },
         ],
-      }),
-      new CleanWebpackPlugin({
-        verbose: false,
       }),
     ],
     devServer: {

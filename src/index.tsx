@@ -1,6 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import SceneList from './components/scene-list';
+import App from './app';
+import TokenProvider from './context/token-context';
 
-ReactDOM.render(<SceneList />, document.getElementById('root'));
+ReactDOM.render(
+  <TokenProvider>
+    <App />
+  </TokenProvider>,
+  document.getElementById('root'),
+);
