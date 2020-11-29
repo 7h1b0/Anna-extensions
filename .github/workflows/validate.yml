@@ -41,7 +41,7 @@ jobs:
           WEB_EXT_API_SECRET: ${{ secrets.WEB_EXT_API_SECRET }}
 
       - name: Rename Asset
-        run: ls | xargs -i mv {} anna.xpi
+        run: ls | xargs -i mv {} anna-extension.xpi
         working-directory: web-ext-artifacts
 
       - name: Create Release
