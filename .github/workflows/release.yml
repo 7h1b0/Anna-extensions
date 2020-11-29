@@ -1,9 +1,9 @@
-name: Validate
+name: Release
 
 on:
   push:
     tags:
-      - 'v*'
+      - '*'
 
 jobs:
   release:
@@ -20,7 +20,7 @@ jobs:
       - run: npm run build
       - run: npm run release
         env:
-          WEB_EXT_API_KEY: ${{ secrets.GITHWEB_EXT_API_KEYUB_TOKEN }}
+          WEB_EXT_API_KEY: ${{ secrets.WEB_EXT_API_KEY }}
           WEB_EXT_API_SECRET: ${{ secrets.WEB_EXT_API_SECRET }}
 
       - name: Create Release
@@ -39,8 +39,9 @@ jobs:
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ASSET_NAME: ${{ format('{anna-{0}-an+fx.xpi}', github.ref) }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./web-ext-artifacts/${{ ls web-ext-artifacts }}
-          asset_name: ${{ ls web-ext-artifacts }}
+          asset_path: ./web-ext-artifacts/$ASSET_NAME
+          asset_name: $ASSET_NAME
           asset_content_type: application/x-xpinstall
