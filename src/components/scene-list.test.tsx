@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, screen, waitFor } from '@testing-library/react';
+import { render, fireEvent, screen } from '@testing-library/react';
 
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
@@ -50,11 +50,9 @@ describe('SceneList', () => {
       </TokenStateContext.Provider>,
     );
 
-    await waitFor(() => {
-      expect(screen.getByText('Jest')).toBeVisible();
-      expect(screen.getByText('React')).toBeVisible();
-      expect(screen.getByText('Typescript')).toBeVisible();
-    });
+    expect(await screen.findByText('Jest')).toBeVisible();
+    expect(screen.getByText('React')).toBeVisible();
+    expect(screen.getByText('Typescript')).toBeVisible();
 
     fireEvent.click(screen.getByText('Jest'));
     expect(spyLaunchScene).toHaveBeenCalledWith(

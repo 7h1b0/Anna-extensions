@@ -40,9 +40,7 @@ describe('Login', () => {
     userEvent.type(screen.getByLabelText('Password'), 'wrong');
     userEvent.click(screen.getByText('Save'));
 
-    await waitFor(() => {
-      expect(screen.getByText('Invalid form'));
-    });
+    expect(await screen.findByText('Invalid form'));
 
     userEvent.clear(screen.getByLabelText('Password'));
     userEvent.type(screen.getByLabelText('Password'), 'test');
