@@ -1,15 +1,15 @@
 import React from 'react';
 
-import Login from './components/login';
-import SceneList from './components/scene-list';
+import Login from './pages/login';
+import Dashboard from './pages/dashboard';
 
-import { useToken } from './context/token-context';
+import { useUser } from './context/user-context';
 
 function App() {
-  const token = useToken();
+  const user = useUser();
 
-  if (token) {
-    return <SceneList />;
+  if (user.token && user.username) {
+    return <Dashboard />;
   }
 
   return <Login />;

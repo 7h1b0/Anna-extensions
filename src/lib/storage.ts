@@ -1,9 +1,10 @@
-export function fetchToken() {
-  return browser.storage.local.get(['token']);
+export function fetchUser() {
+  return browser.storage.local.get(['token', 'username']);
 }
 
-export function saveToken(token: string) {
+export function saveUser(token: string | null, username: string | null) {
   browser.storage.local.set({
-    token: token,
+    token,
+    username,
   });
 }

@@ -1,16 +1,18 @@
 import React from 'react';
-import { useLogin } from '../api';
+import { login } from '../api';
+import { useDispatchUser } from '../context/user-context';
 
 function Authentication() {
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const [error, setError] = React.useState(null);
-  const login = useLogin();
+  const [error, setError] = React.useState('');
+  const dispatch = useDispatchUser();
 
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      await login(username, password);
+      const token = await login(username, password);
+      dispatch({ username, token });
     } catch (err) {
       setError('Invalid form');
     }

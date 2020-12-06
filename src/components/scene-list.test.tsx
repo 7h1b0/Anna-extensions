@@ -7,7 +7,7 @@ import '@testing-library/jest-dom';
 
 import * as Api from '../api';
 import SceneList from './scene-list';
-import { TokenStateContext } from '../context/token-context';
+import { UserStateContext } from '../context/user-context';
 
 const server = setupServer(
   rest.get('/api/scenes/favorites', (_, res, ctx) => {
@@ -45,9 +45,9 @@ describe('SceneList', () => {
       .mockReturnValue(jest.fn());
 
     render(
-      <TokenStateContext.Provider value="token">
+      <UserStateContext.Provider value={{ username: 'toto', token: 'token' }}>
         <SceneList />
-      </TokenStateContext.Provider>,
+      </UserStateContext.Provider>,
     );
 
     expect(await screen.findByText('Jest')).toBeVisible();

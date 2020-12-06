@@ -1,43 +1,49 @@
+import * as React from 'react';
 import { Scene } from './scene';
-import { useToken, useDispatchToken } from './context/token-context';
+import { useUser } from './context/user-context';
 
 const HOST = 'http://anna.lan';
 
-export function useFetchScenes(): () => Promise<Scene[]> {
-  const token = useToken();
-  return () =>
+export function useScenes() {
+  const { token } = useUser();
+  const [scenes, setScenes] = React.useState<Scene[]>([]);
+
+  React.useEffect(() => {
     fetch(`${HOST}/api/scenes/favorites`, {
       headers: {
-        'x-access-token': token,
+        'x-access-token': token ?? '',
       },
-    }).then((res) => res.json());
+    })
+      .then((res) => res.json())
+      .then((scenes) => setScenes(scenes));
+  }, []);
+
+  return scenes;
 }
 
 export function useLaunchScene(sceneId: string) {
-  const token = useToken();
+  const { token } = useUser();
   return () =>
     fetch(`${HOST}/api/scenes/${sceneId}/action`, {
       headers: {
-        'x-access-token': token,
+        'x-access-token': token ?? '',
       },
     });
 }
 
-export function useLogin() {
-  const setToken = useDispatchToken();
-  return (username: string, password: string) =>
-    fetch(`${HOST}/api/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, password }),
-    })
-      .then((res) => res.json())
-      .then((payload) => {
-        if (!payload.token) {
-          throw new Error('Authentication failed');
-        }
-        setToken(payload.token);
-      });
+export function login(username: string, password: string): Promise<string> {
+  return fetch(`${HOST}/api/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ username, password }),
+  })
+    .then((res) => res.json())
+    .then((payload) => {
+      if (!payload.token) {
+        throw new Error('Authentication failed');
+      }
+      return payload.token;
+    });
 }

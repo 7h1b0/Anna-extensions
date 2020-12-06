@@ -6,7 +6,7 @@ import { setupServer } from 'msw/node';
 import userEvent from '@testing-library/user-event';
 
 import Login from './login';
-import { TokenDispatchContext } from '../context/token-context';
+import { UserDispatchContext } from '../context/user-context';
 
 const server = setupServer(
   rest.post('/api/login', (req, res, ctx) => {
@@ -31,9 +31,9 @@ describe('Login', () => {
     const spy = jest.fn();
 
     render(
-      <TokenDispatchContext.Provider value={spy}>
+      <UserDispatchContext.Provider value={spy}>
         <Login />
-      </TokenDispatchContext.Provider>,
+      </UserDispatchContext.Provider>,
     );
 
     userEvent.type(screen.getByLabelText('Username'), 'test');
@@ -47,7 +47,10 @@ describe('Login', () => {
     userEvent.click(screen.getByText('Save'));
 
     await waitFor(() => {
-      expect(spy).toHaveBeenCalledWith('token-token');
+      expect(spy).toHaveBeenCalledWith({
+        token: 'token-token',
+        username: 'test',
+      });
     });
   });
 });

@@ -7,10 +7,14 @@ type Props = {
   scene: Scene;
 };
 
-function SceneBtn({ scene }: React.PropsWithKey<Props>) {
+function SceneBtn({ scene }: Props) {
   const launchScene = useLaunchScene(scene.sceneId);
 
-  return <div onClick={launchScene}>{scene.name}</div>;
+  return (
+    <div className="scene" onClick={launchScene}>
+      {scene.name}
+    </div>
+  );
 }
 
 export default SceneBtn;

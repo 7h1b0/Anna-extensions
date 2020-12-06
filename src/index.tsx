@@ -2,11 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import App from './app';
-import TokenProvider from './context/token-context';
+import UserProvider from './context/user-context';
 
 ReactDOM.render(
-  <TokenProvider>
+  <UserProvider>
     <App />
-  </TokenProvider>,
+  </UserProvider>,
   document.getElementById('root'),
 );
