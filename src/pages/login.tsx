@@ -26,7 +26,7 @@ function Authentication() {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="flex flex-col p-2">
       {error && <p>{error}</p>}
       <label>
         Username
@@ -35,6 +35,7 @@ function Authentication() {
           name="username"
           value={username}
           onChange={handleUsername}
+          className="block focus:ring ring-green-500"
         />
       </label>
       <label>
@@ -44,9 +45,12 @@ function Authentication() {
           name="password"
           value={password}
           onChange={handlePassword}
+          className="block focus:ring ring-green-500"
         />
       </label>
-      <button type="submit">Save</button>
+      <button type="submit" className="text-green-700 mt-3">
+        Save
+      </button>
     </form>
   );
 }

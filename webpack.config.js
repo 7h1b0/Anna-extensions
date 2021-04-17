@@ -1,18 +1,22 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const tailwindcss = require('tailwindcss');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-module.exports = ({ prod = false } = {}) => {
+module.exports = () => {
+  const isProd = process.env.NODE_ENV === 'production';
   return {
-    mode: prod ? 'production' : 'development',
+    mode: isProd ? 'production' : 'development',
     entry: {
-      main: './src',
+      main: ['./src', './src/styles.css'],
     },
     target: 'web',
     output: {
       path: path.join(__dirname, 'dist'),
       filename: '[name].js',
-      pathinfo: !prod,
+      pathinfo: !isProd,
+      clean: true,
     },
     devtool: false,
     module: {
@@ -21,6 +25,23 @@ module.exports = ({ prod = false } = {}) => {
           test: /\.tsx?$/,
           loader: 'babel-loader',
           exclude: /node_modules/,
+        },
+        {
+          test: /\.css$/,
+          use: [
+            {
+              loader: MiniCssExtractPlugin.loader,
+            },
+            { loader: 'css-loader', options: { importLoaders: 1 } },
+            {
+              loader: 'postcss-loader',
+              options: {
+                postcssOptions: {
+                  plugins: [tailwindcss],
+                },
+              },
+            },
+          ],
         },
       ],
     },
@@ -31,6 +52,11 @@ module.exports = ({ prod = false } = {}) => {
       new HtmlWebpackPlugin({
         template: 'src/index.html',
         filename: 'index.html',
+      }),
+      new MiniCssExtractPlugin({
+        filename: 'styles.css',
+        chunkFilename: '[id].css',
+        ignoreOrder: false,
       }),
       new CopyPlugin({
         patterns: [
@@ -46,7 +72,6 @@ module.exports = ({ prod = false } = {}) => {
       port: 3000,
       stats: 'errors-only',
     },
-    bail: true,
     node: false,
     stats: {
       colors: true,
