@@ -2,17 +2,25 @@
   "name": "anna",
   "version": "1.1.0",
   "description": "",
-  "main": "index.js",
+  "targets": {
+    "webext-dev": {
+      "sourceMap": {
+        "inline": true,
+        "inlineSources": true
+      }
+    },
+    "webext-prod": {}
+  },
   "scripts": {
-    "start": "webpack --watch",
-    "start:firefox": "web-ext run --source-dir dist/",
-    "build": "webpack --node-env=production",
+    "start": "parcel src/manifest.json --target webext-dev",
+    "start:firefox": "web-ext run --source-dir dist",
+    "build": "parcel build src/manifest.json --target webext-prod",
     "type:check": "tsc --noEmit",
     "test": "jest --watch",
     "coverage": "jest --coverage --ci --silent",
     "format": "prettier --write \"src/**/*.{ts,tsx,js}\"",
     "format:check": "prettier --list-different \"src/**/*.{ts,tsx,js}\"",
-    "release": "web-ext sign --source-dir dist/ --api-key $WEB_EXT_API_KEY --api-secret $WEB_EXT_API_SECRET"
+    "release": "web-ext sign --source-dir dist/webext-prod --api-key $WEB_EXT_API_KEY --api-secret $WEB_EXT_API_SECRET"
   },
   "keywords": [],
   "author": "",
@@ -23,33 +31,29 @@
     "@babel/plugin-transform-react-jsx": "^7.13.12",
     "@babel/preset-env": "^7.13.15",
     "@babel/preset-typescript": "^7.13.0",
+    "@parcel/config-webextension": "^2.0.0-rc.0",
+    "@parcel/transformer-image": "^2.0.0-rc.0",
     "babel-loader": "^8.2.2",
-    "copy-webpack-plugin": "^8.1.1",
-    "html-webpack-plugin": "^5.3.1",
+    "parcel": "^2.0.0-rc.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "typescript": "^4.2.4",
-    "web-ext": "^6.0.0",
-    "webpack": "^5.33.2",
-    "webpack-cli": "^4.6.0"
+    "typescript": "^4.4.2",
+    "web-ext": "^6.3.0"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^5.11.10",
-    "@testing-library/react": "^11.2.6",
-    "@testing-library/user-event": "^12.8.3",
-    "@types/firefox-webext-browser": "^82.0.0",
-    "@types/jest": "^26.0.22",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^12.0.0",
+    "@testing-library/user-event": "^13.2.1",
+    "@types/firefox-webext-browser": "^82.0.1",
+    "@types/jest": "^27.0.1",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",
-    "css-loader": "^5.2.2",
     "husky": "^4.3.0",
     "isomorphic-fetch": "^3.0.0",
-    "jest": "^26.6.3",
-    "mini-css-extract-plugin": "^1.5.0",
-    "msw": "^0.28.1",
-    "postcss-loader": "^5.2.0",
-    "prettier": "^2.2.1",
-    "pretty-quick": "^3.1.0",
-    "tailwindcss": "^2.1.1"
+    "jest": "^27.0.1",
+    "msw": "^0.35.0",
+    "prettier": "^2.3.2",
+    "pretty-quick": "^3.1.1",
+    "tailwindcss": "^2.2.9"
   }
 }
