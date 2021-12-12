@@ -5,7 +5,7 @@ import Footer from '../components/footer';
 
 function Dashboard() {
   return (
-    <div>
+    <div className="flex flex-col h-full">
       <SceneList />
       <Footer />
     </div>

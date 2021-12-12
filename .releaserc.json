@@ -1,0 +1,25 @@
+{
+  "branches": [{ "name": "master" }],
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
+    [
+      "semantic-release-firefox-add-on",
+      {
+        "extensionId": "anna@7h1b0",
+        "targetXpi": "anna_extension.xpi"
+      }
+    ],
+    [
+      "@semantic-release/github",
+      {
+        "assets": [
+          {
+            "path": "artifacts/anna_extension.xpi",
+            "label": "Devtools extension (Firefox)"
+          }
+        ]
+      }
+    ]
+  ]
+}

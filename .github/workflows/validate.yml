@@ -2,67 +2,59 @@ name: Validate
 
 on: [push]
 
+env:
+  NODE_VERSION: '16.x'
+
 jobs:
-  main:
+  test:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 1
-      - uses: actions/setup-node@v1
-        with:
-          node-version: '14.x'
-      - run: npm ci --prefer-offline --no-audit
-      - run: npm run build
-      - run: npm run format:check
-      - run: npm run type:check
-      - run: npm run coverage
 
-  release:
-    needs: main
-    if: startsWith(github.ref, 'refs/tags/')
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 1
       - uses: actions/setup-node@v2
         with:
-          node-version: '14.x'
+          node-version: ${{ env.NODE_VERSION}}
 
-      - run: npm ci --prefer-offline --no-audit
-      - run: npm run build
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit --ignore-scripts
 
-      - name: Sign Extension
-        run: npm run release
-        env:
-          WEB_EXT_API_KEY: ${{ secrets.WEB_EXT_API_KEY }}
-          WEB_EXT_API_SECRET: ${{ secrets.WEB_EXT_API_SECRET }}
+      - name: Build
+        run: npm run build
 
-      - name: Rename Asset
-        run: ls | xargs -i mv {} anna-extension.xpi
-        working-directory: web-ext-artifacts
+      - name: Format
+        run: npm run format:check
 
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
+      - name: Type
+        run: npm run type:check
+
+      - name: Test
+        run: npm run coverage
+
+  release:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION}}
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit --ignore-scripts
+
+      - name: Build
+        run: npm run build
+
+      - name: Release
+        run: npx -p semantic-release -p semantic-release-firefox-add-on -c semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          draft: false
-          prerelease: false
-
-      - name: Upload Asset
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./web-ext-artifacts/anna-extension.xpi
-          asset_name: anna-extension.xpi
-          asset_content_type: application/x-xpinstall
+          FIREFOX_API_KEY: ${{ secrets.WEB_EXT_API_KEY }}
+          FIREFOX_SECRET_KEY: ${{ secrets.WEB_EXT_API_SECRET }}

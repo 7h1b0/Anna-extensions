@@ -1,9 +1,7 @@
-/* purgecss start ignore */
 @tailwind base;
 
 html,
-body,
-#app {
+body {
   height: 100%;
 }
 
@@ -11,7 +9,13 @@ body {
   @apply bg-gray-100;
 }
 
-/* purgecss end ignore */
+main {
+  max-width: 100%;
+  min-width: 300px;
+  height: 100%;
+  min-height: 400px;
+}
+
 @tailwind components;
 
 @tailwind utilities;

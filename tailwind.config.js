@@ -1,7 +1,5 @@
 module.exports = {
-  purge: {
-    content: ['./src/**/*.tsx'],
-  },
+  content: ['./src/**/*.tsx'],
   corePlugins: {
     container: false,
     animation: false,
