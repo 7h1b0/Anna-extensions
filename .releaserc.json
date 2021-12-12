@@ -16,7 +16,7 @@
         "assets": [
           {
             "path": "artifacts/anna_extension.xpi",
-            "label": "Devtools extension (Firefox)"
+            "label": "Anna extension (Firefox)"
           }
         ]
       }
