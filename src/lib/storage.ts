@@ -8,3 +8,11 @@ export function saveUser(token: string | null, username: string | null) {
     username,
   });
 }
+
+export function fetchHost() {
+  return browser.storage.local.get(['host']);
+}
+
+export function saveHost(host: string) {
+  browser.storage.local.set({ host });
+}

@@ -8,9 +8,10 @@ import '@testing-library/jest-dom';
 import * as Api from '../api';
 import SceneList from './scene-list';
 import { UserStateContext } from '../context/user-context';
+import * as storage from '../lib/storage';
 
 const server = setupServer(
-  rest.get('/api/scenes/favorites', (_, res, ctx) => {
+  rest.get('http://test.lan/api/scenes/favorites', (_, res, ctx) => {
     return res(
       ctx.json([
         {
@@ -43,6 +44,10 @@ describe('SceneList', () => {
     const spyLaunchScene = jest
       .spyOn(Api, 'useLaunchScene')
       .mockReturnValue(jest.fn());
+
+    jest
+      .spyOn(storage, 'fetchHost')
+      .mockResolvedValue({ host: 'http://test.lan' });
 
     render(
       <UserStateContext.Provider value={{ username: 'toto', token: 'token' }}>

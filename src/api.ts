@@ -1,19 +1,21 @@
 import * as React from 'react';
 import { Scene } from './scene';
 import { useUser } from './context/user-context';
-
-const HOST = 'http://anna.lan';
+import { fetchHost } from './lib/storage';
 
 export function useScenes() {
   const { token } = useUser();
   const [scenes, setScenes] = React.useState<Scene[]>([]);
 
   React.useEffect(() => {
-    fetch(`${HOST}/api/scenes/favorites`, {
-      headers: {
-        'x-access-token': token ?? '',
-      },
-    })
+    fetchHost()
+      .then(({ host }) => {
+        return fetch(`${host}/api/scenes/favorites`, {
+          headers: {
+            'x-access-token': token ?? '',
+          },
+        });
+      })
       .then((res) => res.json())
       .then((scenes) => setScenes(scenes));
   }, []);
@@ -24,15 +26,21 @@ export function useScenes() {
 export function useLaunchScene(sceneId: string) {
   const { token } = useUser();
   return () =>
-    fetch(`${HOST}/api/scenes/${sceneId}/action`, {
-      headers: {
-        'x-access-token': token ?? '',
-      },
-    });
+    fetchHost().then(({ host }) =>
+      fetch(`${host}/api/scenes/${sceneId}/action`, {
+        headers: {
+          'x-access-token': token ?? '',
+        },
+      }),
+    );
 }
 
-export function login(username: string, password: string): Promise<string> {
-  return fetch(`${HOST}/api/login`, {
+export function login(
+  host: string,
+  username: string,
+  password: string,
+): Promise<string> {
+  return fetch(`${host}/api/login`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

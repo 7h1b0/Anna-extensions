@@ -9,7 +9,7 @@ import Login from './login';
 import { UserDispatchContext } from '../context/user-context';
 
 const server = setupServer(
-  rest.post('/api/login', (req, res, ctx) => {
+  rest.post('http://test.lan/api/login', (req, res, ctx) => {
     // @ts-ignore
     if (req.body?.username === 'test' && req.body?.password === 'test') {
       return res(ctx.json({ token: 'token-token' }));
@@ -36,6 +36,7 @@ describe('Login', () => {
       </UserDispatchContext.Provider>,
     );
 
+    userEvent.type(screen.getByLabelText('Url'), 'http://test.lan');
     userEvent.type(screen.getByLabelText('Username'), 'test');
     userEvent.type(screen.getByLabelText('Password'), 'wrong');
     userEvent.click(screen.getByText('Save'));
