@@ -1,12 +1,16 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 
 import App from './app';
 import UserProvider from './context/user-context';
 
-ReactDOM.render(
-  <UserProvider>
-    <App />
-  </UserProvider>,
-  document.getElementById('root'),
-);
+const container = document.getElementById('root');
+if (container) {
+  const root = createRoot(container);
+
+  root.render(
+    <UserProvider>
+      <App />
+    </UserProvider>,
+  );
+}

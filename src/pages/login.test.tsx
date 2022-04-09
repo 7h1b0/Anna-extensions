@@ -28,6 +28,7 @@ describe('Login', () => {
   });
 
   it('should allow user to login into Anna', async () => {
+    const user = userEvent.setup();
     const spy = jest.fn();
 
     render(
@@ -36,16 +37,16 @@ describe('Login', () => {
       </UserDispatchContext.Provider>,
     );
 
-    userEvent.type(screen.getByLabelText('Url'), 'http://test.lan');
-    userEvent.type(screen.getByLabelText('Username'), 'test');
-    userEvent.type(screen.getByLabelText('Password'), 'wrong');
-    userEvent.click(screen.getByText('Save'));
+    await user.type(screen.getByLabelText('Url'), 'http://test.lan');
+    await user.type(screen.getByLabelText('Username'), 'test');
+    await user.type(screen.getByLabelText('Password'), 'wrong');
+    await user.click(screen.getByText('Save'));
 
     expect(await screen.findByText('Invalid form'));
 
-    userEvent.clear(screen.getByLabelText('Password'));
-    userEvent.type(screen.getByLabelText('Password'), 'test');
-    userEvent.click(screen.getByText('Save'));
+    await user.clear(screen.getByLabelText('Password'));
+    await user.type(screen.getByLabelText('Password'), 'test');
+    await user.click(screen.getByText('Save'));
 
     await waitFor(() => {
       expect(spy).toHaveBeenCalledWith({
