@@ -12,11 +12,11 @@ function SceneList() {
   const scenes = useScenes();
 
   return (
-    <div className="bg-white p-2 grow">
+    <ul className="bg-white p-2 grow">
       {scenes.sort(sortByName).map((scene) => (
         <SceneBtn key={scene.sceneId} scene={scene} />
       ))}
-    </div>
+    </ul>
   );
 }
 

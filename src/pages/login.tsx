@@ -33,10 +33,10 @@ function Authentication() {
   }
 
   return (
-    <div className="p-2">
+    <main className="p-2">
       <h1 className="text-lg text-grey-900 font-semibold">Sign up to Anna</h1>
       <form onSubmit={handleSubmit} className="flex flex-col w-full gap-4 mt-3">
-        {error && <p>{error}</p>}
+        {error && <output>{error}</output>}
         <label className="text-sm font-medium text-grey-900 ">
           Url
           <input
@@ -74,7 +74,7 @@ function Authentication() {
           Save
         </button>
       </form>
-    </div>
+    </main>
   );
 }
 

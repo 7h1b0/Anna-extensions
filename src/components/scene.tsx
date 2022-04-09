@@ -11,12 +11,14 @@ function SceneBtn({ scene }: Props) {
   const launchScene = useLaunchScene(scene.sceneId);
 
   return (
-    <div
-      className="text-sm font-medium text-grey-900 hover:bg-gray-100 hover:text-green-700 py-2 px-4 cursor-pointer rounded-lg"
-      onClick={launchScene}
-    >
-      {scene.name}
-    </div>
+    <li>
+      <button
+        className="w-full text-left text-sm font-medium text-grey-900 hover:bg-gray-100 hover:text-green-700 py-2 px-4 cursor-pointer rounded-lg"
+        onClick={launchScene}
+      >
+        {scene.name}
+      </button>
+    </li>
   );
 }
 

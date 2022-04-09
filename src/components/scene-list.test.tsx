@@ -1,5 +1,6 @@
 import React from 'react';
-import { render, fireEvent, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
@@ -41,6 +42,7 @@ describe('SceneList', () => {
   });
 
   it('should let user launch a scene', async () => {
+    const user = userEvent.setup();
     const spyLaunchScene = jest
       .spyOn(Api, 'useLaunchScene')
       .mockReturnValue(jest.fn());
@@ -55,11 +57,11 @@ describe('SceneList', () => {
       </UserStateContext.Provider>,
     );
 
-    expect(await screen.findByText('Jest')).toBeVisible();
-    expect(screen.getByText('React')).toBeVisible();
-    expect(screen.getByText('Typescript')).toBeVisible();
+    expect(await screen.findByRole('button', { name: 'Jest' })).toBeVisible();
+    expect(screen.getByRole('button', { name: 'React' })).toBeVisible();
+    expect(screen.getByRole('button', { name: 'Typescript' })).toBeVisible();
 
-    fireEvent.click(screen.getByText('Jest'));
+    await user.click(screen.getByRole('button', { name: 'Jest' }));
     expect(spyLaunchScene).toHaveBeenCalledWith(
       '434d2662-de89-4861-9ca1-46e307d31f90',
     );

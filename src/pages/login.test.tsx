@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
-import userEvent from '@testing-library/user-event';
 
 import Login from './login';
 import { UserDispatchContext } from '../context/user-context';
@@ -37,16 +37,19 @@ describe('Login', () => {
       </UserDispatchContext.Provider>,
     );
 
-    await user.type(screen.getByLabelText('Url'), 'http://test.lan');
-    await user.type(screen.getByLabelText('Username'), 'test');
+    await user.type(
+      screen.getByRole('textbox', { name: 'Url' }),
+      'http://test.lan',
+    );
+    await user.type(screen.getByRole('textbox', { name: 'Username' }), 'test');
     await user.type(screen.getByLabelText('Password'), 'wrong');
     await user.click(screen.getByText('Save'));
 
-    expect(await screen.findByText('Invalid form'));
+    expect(await screen.findByRole('status')).toBeVisible();
 
     await user.clear(screen.getByLabelText('Password'));
     await user.type(screen.getByLabelText('Password'), 'test');
-    await user.click(screen.getByText('Save'));
+    await user.click(screen.getByRole('button', { name: 'Save' }));
 
     await waitFor(() => {
       expect(spy).toHaveBeenCalledWith({

@@ -13,9 +13,9 @@ function Footer() {
 
   return (
     <footer className="bg-grey-50 py-4 pl-4 pr-10">
-      <p className="text-base">
+      <h1 className="text-base">
         Hi <span className="text-green-700">{username}!</span>
-      </p>
+      </h1>
       <button onClick={handleLogout} className="text-gray-800 text-xs">
         Logout
       </button>
